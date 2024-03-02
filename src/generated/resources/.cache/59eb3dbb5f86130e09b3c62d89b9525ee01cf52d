@@ -1,0 +1,5 @@
+// 1.20.4	2024-03-01T05:24:58.8716807	Loot Tables
+d6ebf5106ee5e000cfb8fc50c2d9999a8b5a1d6c data/technologicalascendancy/loot_tables/blocks/charger_block.json
+b5bcd9236238b73384c5cf8a584bab38921455e3 data/technologicalascendancy/loot_tables/blocks/complex_block.json
+4874b500236d102a2387f3688933055bbd9a41d4 data/technologicalascendancy/loot_tables/blocks/processor_block.json
+bb1b7a559144de51c0bbf9539bad6205e469ec01 data/technologicalascendancy/loot_tables/blocks/simple_block.json

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "technologicalascendancy",
+  "key": {
+    "d": {
+      "tag": "minecraft:dirt"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "x": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "pattern": [
+    "dsd",
+    "dxd",
+    "ddd"
+  ],
+  "result": {
+    "item": "technologicalascendancy:complex_block"
+  }
+}

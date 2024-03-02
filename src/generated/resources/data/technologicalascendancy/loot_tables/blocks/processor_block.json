@@ -1,0 +1,54 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "Input",
+                  "target": "BlockEntityTag.Input"
+                }
+              ],
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "Output",
+                  "target": "BlockEntityTag.Output"
+                }
+              ],
+              "source": "block_entity"
+            },
+            {
+              "type": "technologicalascendancy:processor_block",
+              "entries": [
+                {
+                  "type": "minecraft:dynamic",
+                  "name": "minecraft:contents"
+                }
+              ],
+              "function": "minecraft:set_contents"
+            }
+          ],
+          "name": "technologicalascendancy:processor_block"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "technologicalascendancy:blocks/processor_block"
+}
