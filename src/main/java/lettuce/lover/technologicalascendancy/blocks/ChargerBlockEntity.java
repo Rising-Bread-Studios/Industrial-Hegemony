@@ -1,6 +1,7 @@
 package lettuce.lover.technologicalascendancy.blocks;
 
 import lettuce.lover.technologicalascendancy.Registration;
+import lettuce.lover.technologicalascendancy.TechnologicalAscendancy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.EnergyStorage;
@@ -26,8 +29,7 @@ public class ChargerBlockEntity extends BlockEntity {
     public static int SLOT_COUNT = 1;
     public static int SLOT = 0;
     public static int CAPACITY = 10000;
-    public static int TRANSFER_RATE = 10;
-
+    public static int TRANSFER_RATE = 100;
     private final ItemStackHandler items = createItemHandler();
     private final Lazy<IItemHandler> itemHandler = Lazy.of(() -> items);
     private final EnergyStorage energy = createEnergyStorage();
@@ -43,7 +45,7 @@ public class ChargerBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), SimpleBlock.UPDATE_ALL);
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             }
         };
     }
@@ -52,7 +54,7 @@ public class ChargerBlockEntity extends BlockEntity {
     }
     @NotNull
     private EnergyStorage createEnergyStorage() {
-        return new EnergyStorage(CAPACITY, TRANSFER_RATE, TRANSFER_RATE, CAPACITY - 10);
+        return new EnergyStorage(CAPACITY, TRANSFER_RATE, TRANSFER_RATE, CAPACITY);
     }
     public IEnergyStorage getEnergyStorage() {
         return energyStorage.get();
@@ -115,11 +117,14 @@ public class ChargerBlockEntity extends BlockEntity {
         if (level.getGameTime() % 20 == 0) {
             ItemStack stack = items.getStackInSlot(SLOT);
             if (!stack.isEmpty()) {
-                var capability = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-                if (capability != null) {
-                    int energy = capability.getEnergyStored();
-                    if (energy < capability.getMaxEnergyStored()) {
-                        capability.receiveEnergy(TRANSFER_RATE, false);
+                IEnergyStorage capability = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+                if (capability != null && capability.canReceive()) {
+                    CompoundTag tag = stack.getOrCreateTag();
+                    int energyAmt = tag.getInt("Energy");
+                    if (energyAmt < capability.getMaxEnergyStored()) {
+                        int extracted = capability.receiveEnergy(TRANSFER_RATE, false);
+                        tag.putInt("Energy", energyAmt + extracted);
+                        energy.extractEnergy(extracted, false);
                     } else {
                         ejectItem();
                     }

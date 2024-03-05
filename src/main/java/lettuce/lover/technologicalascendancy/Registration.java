@@ -1,6 +1,7 @@
 package lettuce.lover.technologicalascendancy;
 
 import lettuce.lover.technologicalascendancy.blocks.*;
+import lettuce.lover.technologicalascendancy.items.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,12 +16,15 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static lettuce.lover.technologicalascendancy.TechnologicalAscendancy.MODID;
@@ -49,6 +53,8 @@ public class Registration {
     public static final Supplier<BlockEntityType<ChargerBlockEntity>> CHARGER_BLOCK_ENTITY = BLOCK_ENTITIES.register("charger_block",
             () -> BlockEntityType.Builder.of(ChargerBlockEntity::new, CHARGER_BLOCK.get()).build(null)
     );
+    // Create Deferred Item for Tablet
+    public static final DeferredItem<Item> TABLET_ITEM = ITEMS.registerItem("tablet_item", Tablet::new, new Item.Properties());
     // Create Deferred Block, Item, and Block Entity for ProcessorBlock
     public static final DeferredBlock<ProcessorBlock> PROCESSOR_BLOCK = BLOCKS.register("processor_block", ProcessorBlock::new);
     public static final DeferredItem<Item> PROCESSOR_BLOCK_ITEM = ITEMS.register("processor_block", () -> new BlockItem(PROCESSOR_BLOCK.get(), new Item.Properties()));
@@ -69,6 +75,7 @@ public class Registration {
                 output.accept(COMPLEX_BLOCK_ITEM.get());
                 output.accept(CHARGER_BLOCK_ITEM.get());
                 output.accept(PROCESSOR_BLOCK_ITEM.get());
+                output.accept(TABLET_ITEM);
             }).build());
 
     public static void init(IEventBus modEventBus) {
@@ -85,6 +92,9 @@ public class Registration {
             event.accept(COMPLEX_BLOCK_ITEM);
             event.accept(CHARGER_BLOCK_ITEM);
             event.accept(PROCESSOR_BLOCK_ITEM);
+        }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(TABLET_ITEM);
         }
     }
 
@@ -109,6 +119,14 @@ public class Registration {
                 (entity, direction) -> {
                     return entity.getEnergyStorage();
                 }
+        );
+        event.registerItem(
+                Capabilities.EnergyStorage.ITEM,
+                (stack, context) -> {
+                    return Lazy.of(() -> new EnergyStorage(Tablet.CAPACITY, Tablet.TRANSFER_RATE, 0, 0)).get();
+                },
+                TABLET_ITEM
+
         );
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 PROCESSOR_BLOCK_ENTITY.get(),

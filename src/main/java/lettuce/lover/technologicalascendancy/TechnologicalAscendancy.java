@@ -74,16 +74,6 @@ public class TechnologicalAscendancy {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
     }
-
-    /*private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.EnergyStorage.BLOCK,
-                CHARGER_THINGY_BE.get(),
-                (myBE, side) -> {
-                    return new EnergyStorage(10000, 20, 20, 100);
-                }
-        );
-    }*/
 }
 /*
 new IBlockCapabilityProvider<>() {
