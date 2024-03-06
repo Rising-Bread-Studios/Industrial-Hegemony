@@ -35,9 +35,20 @@ public class ChargerBlockRenderer implements BlockEntityRenderer<ChargerBlockEnt
                 poseStack.pushPose();
                 poseStack.scale(0.5f, 0.5f, 0.5f);
                 poseStack.translate(1f, 3f, 1f);
-                Quaternionf rotation = Minecraft.getInstance().gameRenderer.getMainCamera().rotation();
-                poseStack.mulPose(rotation);
-                //poseStack.mulPose(Axis.YP.rotationDegrees(angle));
+
+                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+                Vec3 blockPos = blockEntity.getBlockPos().getCenter();
+                blockPos.add(0, 30, 0);
+                Vec3 direction = blockPos.vectorTo(cameraPos);
+                Vec3 xzPlaneNormal = new Vec3(0, 1, 0);
+                double anglexz = Math.toDegrees(Math.atan2(direction.z, direction.x));
+                double angley = Math.toDegrees(
+                        Math.acos(
+                                (direction.dot(xzPlaneNormal))/(direction.length()*xzPlaneNormal.length())
+                        )
+                ) - 90;
+                poseStack.mulPose(Axis.YN.rotationDegrees((float) anglexz + 90));
+                poseStack.mulPose(Axis.XN.rotationDegrees((float) angley));
                 itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, packedOverlay, poseStack, buffer, Minecraft.getInstance().level, 0);
                 poseStack.popPose();
             }

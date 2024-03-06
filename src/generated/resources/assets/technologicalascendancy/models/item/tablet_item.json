@@ -1,3 +1,6 @@
 {
-  "parent": "technologicalascendancy:item/tablet_item"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "technologicalascendancy:item/tablet_item"
+  }
 }

@@ -35,6 +35,8 @@ public class TechnologicalAscendancy {
         modEventBus.addListener(Registration::addCreative);
         // Register capabilities to mod items
         modEventBus.addListener(Registration::registerCapabilities);
+        // Register GUI overlays
+        modEventBus.addListener(Registration::addGuiOverlays);
         // Register the data generation
 
 

@@ -17,6 +17,7 @@ public class TechAscendLanguageProvider extends LanguageProvider {
         add(Registration.COMPLEX_BLOCK.get(), "Complex Block");
         add(Registration.CHARGER_BLOCK.get(), "Charger Block");
         add(Registration.PROCESSOR_BLOCK.get(), "Processor");
+        add(Registration.TABLET_ITEM.get(), "Tablet");
         add(ProcessorBlock.SCREEN_TUTORIAL_PROCESSOR, "Processor");
     }
 }

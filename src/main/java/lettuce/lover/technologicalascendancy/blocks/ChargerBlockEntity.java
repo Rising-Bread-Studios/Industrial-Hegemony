@@ -119,11 +119,9 @@ public class ChargerBlockEntity extends BlockEntity {
             if (!stack.isEmpty()) {
                 IEnergyStorage capability = stack.getCapability(Capabilities.EnergyStorage.ITEM);
                 if (capability != null && capability.canReceive()) {
-                    CompoundTag tag = stack.getOrCreateTag();
-                    int energyAmt = tag.getInt("Energy");
+                    int energyAmt = capability.getEnergyStored();
                     if (energyAmt < capability.getMaxEnergyStored()) {
                         int extracted = capability.receiveEnergy(TRANSFER_RATE, false);
-                        tag.putInt("Energy", energyAmt + extracted);
                         energy.extractEnergy(extracted, false);
                     } else {
                         ejectItem();

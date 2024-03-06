@@ -2,10 +2,12 @@ package lettuce.lover.technologicalascendancy;
 
 import lettuce.lover.technologicalascendancy.blocks.*;
 import lettuce.lover.technologicalascendancy.items.*;
+import lettuce.lover.technologicalascendancy.client.rendering.gui.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -15,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.EnergyStorage;
@@ -24,7 +28,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import static lettuce.lover.technologicalascendancy.TechnologicalAscendancy.MODID;
@@ -86,6 +89,9 @@ public class Registration {
         CREATIVE_MODE_TABS.register(modEventBus);
     }
 
+    public static void addGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll(new ResourceLocation(MODID, "guienergybars"), new EnergyBarRenderer());
+    }
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(SIMPLE_BLOCK_ITEM);
@@ -123,7 +129,20 @@ public class Registration {
         event.registerItem(
                 Capabilities.EnergyStorage.ITEM,
                 (stack, context) -> {
-                    return Lazy.of(() -> new EnergyStorage(Tablet.CAPACITY, Tablet.TRANSFER_RATE, 0, 0)).get();
+                    return new EnergyStorage(Tablet.CAPACITY, Tablet.TRANSFER_RATE, 0, 0) {
+                        @Override
+                        public int receiveEnergy(int maxReceive, boolean simulate) {
+                            int received = super.receiveEnergy(maxReceive, simulate);
+                            stack.getOrCreateTag().putInt("Energy", this.getEnergyStored() + received);
+                            this.energy = received;
+                            return received;
+                        }
+
+                        @Override
+                        public int getEnergyStored() {
+                            return stack.getOrCreateTag().getInt("Energy");
+                        }
+                    };
                 },
                 TABLET_ITEM
 

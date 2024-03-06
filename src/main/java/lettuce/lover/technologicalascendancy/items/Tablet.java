@@ -14,7 +14,7 @@ public class Tablet extends Item {
     public static int CAPACITY = 1000;
     public static int TRANSFER_RATE = 20;
     public Tablet(Properties props) {
-        super(new Item.Properties().stacksTo(1));
+        super(new Item.Properties());
     }
     @Override
     public void onCraftedBy(ItemStack stack, Level level, Player player) {

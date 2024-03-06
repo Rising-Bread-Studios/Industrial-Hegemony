@@ -17,6 +17,7 @@ public class TechAscendItemModels extends ItemModelProvider {
         withExistingParent(Registration.COMPLEX_BLOCK.getId().getPath(), modLoc("block/complex_block"));
         withExistingParent(Registration.CHARGER_BLOCK.getId().getPath(), modLoc("block/charger_block"));
         withExistingParent(Registration.PROCESSOR_BLOCK.getId().getPath(), modLoc("block/processor_main"));
-        withExistingParent(Registration.TABLET_ITEM.getId().getPath(), modLoc("item/tablet_item"));
+        basicItem(Registration.TABLET_ITEM.getId());
+
     }
 }
