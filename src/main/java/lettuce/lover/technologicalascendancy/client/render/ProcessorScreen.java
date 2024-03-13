@@ -1,4 +1,4 @@
-package lettuce.lover.technologicalascendancy.client.rendering;
+package lettuce.lover.technologicalascendancy.client.render;
 
 
 import lettuce.lover.technologicalascendancy.TechnologicalAscendancy;

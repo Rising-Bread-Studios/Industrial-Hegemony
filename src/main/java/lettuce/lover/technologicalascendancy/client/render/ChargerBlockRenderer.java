@@ -1,8 +1,7 @@
-package lettuce.lover.technologicalascendancy.client.rendering;
+package lettuce.lover.technologicalascendancy.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import lettuce.lover.technologicalascendancy.TechnologicalAscendancy;
 import lettuce.lover.technologicalascendancy.blocks.ChargerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -10,12 +9,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.joml.Quaternionf;
 
 public class ChargerBlockRenderer implements BlockEntityRenderer<ChargerBlockEntity> {
 

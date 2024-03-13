@@ -1,13 +1,16 @@
 package lettuce.lover.technologicalascendancy;
 
+import com.mojang.blaze3d.platform.GlUtil;
 import lettuce.lover.technologicalascendancy.blocks.*;
+import lettuce.lover.technologicalascendancy.client.render.gui.EnergyBarRenderer;
 import lettuce.lover.technologicalascendancy.items.*;
-import lettuce.lover.technologicalascendancy.client.rendering.gui.*;
+import mcjty.theoneprobe.gui.GuiConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -17,10 +20,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.event.ContainerScreenEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.gui.overlay.GuiOverlayManager;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -89,20 +92,6 @@ public class Registration {
         CREATIVE_MODE_TABS.register(modEventBus);
     }
 
-    public static void addGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll(new ResourceLocation(MODID, "guienergybars"), new EnergyBarRenderer());
-    }
-    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(SIMPLE_BLOCK_ITEM);
-            event.accept(COMPLEX_BLOCK_ITEM);
-            event.accept(CHARGER_BLOCK_ITEM);
-            event.accept(PROCESSOR_BLOCK_ITEM);
-        }
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            event.accept(TABLET_ITEM);
-        }
-    }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(

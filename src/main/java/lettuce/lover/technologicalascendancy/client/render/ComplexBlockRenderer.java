@@ -1,4 +1,4 @@
-package lettuce.lover.technologicalascendancy.client.rendering;
+package lettuce.lover.technologicalascendancy.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,7 +1,7 @@
 package lettuce.lover.technologicalascendancy.client;
 
 import lettuce.lover.technologicalascendancy.Registration;
-import lettuce.lover.technologicalascendancy.client.rendering.*;
+import lettuce.lover.technologicalascendancy.client.render.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
